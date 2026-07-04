@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leandro Beccarelli · Videografie &amp; Brand Content</title>
+  <meta name="description" content="Cinematische Videos und Premium Shorts mit starkem Wiedererkennungswert. Videografie, Branding und Content für deine Marke.">
+  <meta property="og:title" content="Leandro Beccarelli · Videografie &amp; Brand Content">
+  <meta property="og:description" content="Cinematische Videos und Premium Shorts mit starkem Wiedererkennungswert.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c1524'/%3E%3Cpath d='M26 20l18 12-18 12z' fill='%2393c5fd'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Bewegter Hintergrund: radiale Gradient-Blobs + Grain -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Hauptnavigation">
+      <a class="wordmark" href="#top">lb<span class="wordmark-dot">.</span></a>
+      <div class="nav-links">
+        <a href="#shorts">Shorts</a>
+        <a href="#youtube">YouTube</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#ueber-mich">Über mich</a>
+      </div>
+      <a class="btn btn-primary btn-small" href="#kontakt">Projekt anfragen</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <img src="assets/about-cinematic.jpg" alt="" fetchpriority="high">
+        <div class="hero-scrim"></div>
+      </div>
+      <div class="hero-frame container">
+
+        <div class="hud hud-top" aria-hidden="true">
+          <span class="hud-item">4K · 24 FPS</span>
+          <span class="hud-item hud-rec"><span class="rec-dot"></span>REC</span>
+          <span class="hud-item hud-timecode" id="timecode">TC 00:00:00:00</span>
+        </div>
+
+        <div class="hero-content">
+          <p class="kicker hero-anim delay-1">Videografie · Branding · Shorts</p>
+          <h1 class="hero-title">
+            <span class="hero-line hero-anim delay-2"><span>Bewegtbild mit</span></span>
+            <span class="hero-line hero-anim delay-3"><span>Wiedererkennungs&shy;wert.</span></span>
+          </h1>
+          <p class="hero-sub hero-anim delay-4">
+            Ich entwickle cinematische Videos und Premium Shorts, die deine Brand
+            unverwechselbar machen. Individuell konzipiert, konsequent im Look,
+            gebaut für Aufmerksamkeit.
+          </p>
+          <div class="hero-actions hero-anim delay-5">
+            <a class="btn btn-primary" href="#shorts">Arbeiten ansehen</a>
+            <a class="btn btn-ghost" href="#kontakt">Projekt anfragen</a>
+          </div>
+        </div>
+
+        <div class="hud hud-bottom" aria-hidden="true">
+          <span class="hud-item">SCENE 01 · TAKE 01</span>
+          <a class="scroll-cue" href="#shorts" aria-hidden="true" tabindex="-1">
+            <span class="scroll-cue-line"></span>
+          </a>
+          <span class="hud-item">ZÜRICH / CH</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ SHORTS 9:16 (Hauptportfolio) ============ -->
+    <section class="section section-shorts" id="shorts">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="kicker">Selected Work · 9:16</p>
+          <h2>Premium Shorts</h2>
+          <p class="lead">
+            Meine Spezialität: vertikale Formate mit klarer Handschrift. Jeder
+            Short folgt dem visuellen System deiner Brand und bleibt im Kopf.
+            Klick auf ein Video und es spielt direkt hier ab.
+          </p>
+        </div>
+      </div>
+      <div class="shorts-scroller-wrap">
+        <div class="shorts-scroller container" id="shortsRow" tabindex="0" aria-label="Shorts, horizontal scrollbar"></div>
+      </div>
+    </section>
+
+    <!-- ============ YOUTUBE 16:9 (kompakt) ============ -->
+    <section class="section section-compact" id="youtube">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="kicker">YouTube</p>
+          <h2>YouTube Projekte</h2>
+          <p class="lead">
+            Cinematische Langformate im 16:9 Format, von Konzept bis Schnitt.
+          </p>
+        </div>
+        <div class="video-grid" id="videoGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERTISE ============ -->
+    <section class="section" id="expertise">
+      <div class="container container-narrow">
+        <div class="section-head reveal">
+          <p class="kicker">Expertise</p>
+          <h2>Was ich für deine Brand tue</h2>
+          <p class="lead">
+            Mein Fokus liegt auf Branding und der Produktion von Premium Shorts.
+            Das Ziel ist immer dasselbe: ein Look, den man sofort erkennt.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card reveal">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg>
+            </div>
+            <div class="card-body">
+              <h3>Premium Brand Shorts</h3>
+              <p>
+                Vertikale Videos in höchster Qualität, geschnitten für die ersten
+                zwei Sekunden. Hook, Rhythmus und Sounddesign greifen ineinander,
+                damit dein Content nicht weggewischt wird.
+              </p>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+            </div>
+            <div class="card-body">
+              <h3>Visuelles Branding im Bewegtbild</h3>
+              <p>
+                Farbwelt, Typografie, Motion Design und Grading werden zu einem
+                System, das sich durch jedes Video zieht. So entsteht ein
+                Wiedererkennungswert, der weit über ein Logo hinausgeht.
+              </p>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>
+            </div>
+            <div class="card-body">
+              <h3>Cinematische Produktion</h3>
+              <p>
+                Von der Idee über den Dreh bis zum finalen Schnitt in 4K. Ich
+                arbeite mit filmischer Lichtsetzung, sauberem Ton und einem
+                Grading, das deiner Marke einen eigenen Charakter gibt.
+              </p>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+            </div>
+            <div class="card-body">
+              <h3>Content mit Strategie</h3>
+              <p>
+                Einzelne Videos sind gut, Serien sind besser. Ich entwickle
+                Formate, die sich wiederholen lassen und deine Kanäle langfristig
+                mit konsistentem Premium Content versorgen.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ÜBER MICH ============ -->
+    <section class="section section-about" id="ueber-mich">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="kicker">Über mich</p>
+          <h2>Der Mensch hinter der Kamera</h2>
+          <p class="lead">
+            Ich bin Leandro Beccarelli, Videograf aus der Schweiz. Von Athleten
+            bis zu Unternehmen begleite ich meine Kunden von der ersten Idee
+            über den Dreh bis zum finalen Schnitt. Was mich antreibt: Licht,
+            Details und Bilder, die hängen bleiben.
+          </p>
+        </div>
+      </div>
+      <div class="filmstrip-wrap">
+        <div class="filmstrip container" id="filmstrip" tabindex="0" aria-label="Behind the Scenes Fotos, horizontal scrollbar">
+          <figure class="reveal"><img src="assets/about-portrait.jpg" alt="Porträt von Leandro Beccarelli" loading="lazy"></figure>
+          <figure class="reveal"><img src="assets/bts-interview.jpg" alt="Interview-Dreh mit Lichtsetzung" loading="lazy"></figure>
+          <figure class="reveal"><img src="assets/bts-studio.jpg" alt="Videodreh am Studio-Set" loading="lazy"></figure>
+          <figure class="reveal"><img src="assets/bts-gym.jpg" alt="Shooting im Gym mit Softbox" loading="lazy"></figure>
+          <figure class="reveal"><img src="assets/bts-office.jpg" alt="Produktion im Büro" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ KONTAKT ============ -->
+    <section class="section section-contact" id="kontakt">
+      <div class="container container-narrow">
+        <div class="contact-box reveal">
+          <p class="kicker">Kontakt</p>
+          <h2>Lass uns dein nächstes<br>Projekt starten.</h2>
+          <p class="lead">
+            Erzähl mir kurz, wofür deine Brand steht und was du erreichen willst.
+            Du bekommst innert 48 Stunden eine Antwort mit einer ersten Einschätzung.
+          </p>
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="mailto:leandro.beccarelli@gmail.com">leandro.beccarelli@gmail.com</a>
+            <div class="socials">
+              <a href="#" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              </a>
+              <a href="#" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+              </a>
+              <a href="#" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span id="year">2026</span> Leandro Beccarelli</span>
+      <span class="footer-tag">Videografie &amp; Brand Content · Schweiz</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
