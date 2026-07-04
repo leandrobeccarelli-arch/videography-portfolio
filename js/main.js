@@ -105,7 +105,17 @@ function renderVideos() {
     const regular = WIDE_VIDEOS.filter(v => !v.featured).length;
     if (regular >= 3 && regular % 3 === 0) grid.classList.add('cols-3');
   }
-  if (row) SHORT_VIDEOS.forEach(v => row.appendChild(createVideoCard(v, { vertical: true })));
+  if (row) {
+    SHORT_VIDEOS.forEach(v => row.appendChild(createVideoCard(v, { vertical: true })));
+    /* Zweiter, identischer Satz für die nahtlose Endlos-Rotation */
+    SHORT_VIDEOS.forEach(v => {
+      const clone = createVideoCard(v, { vertical: true });
+      clone.classList.remove('reveal');
+      clone.setAttribute('aria-hidden', 'true');
+      clone.querySelector('.video-thumb').tabIndex = -1;
+      row.appendChild(clone);
+    });
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -175,6 +185,66 @@ function initScrollerKeyboard(row) {
 }
 
 /* --------------------------------------------------------------------------
+   Endlos-Rotation der Shorts.
+   Pausiert bei Hover, Touch, Tastaturfokus, ausserhalb des Viewports,
+   bei prefers-reduced-motion und sobald ein Video abspielt.
+   -------------------------------------------------------------------------- */
+function initShortsAutoLoop(row) {
+  if (!row) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const SPEED = 35; /* Pixel pro Sekunde */
+  let paused = false;
+  let inView = false;
+  let resumeTimer = null;
+  let pos = 0;
+  let lastTime = null;
+
+  const pause = () => {
+    clearTimeout(resumeTimer);
+    paused = true;
+  };
+  const resume = (delay) => {
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => { paused = false; }, delay);
+  };
+
+  row.addEventListener('pointerenter', pause);
+  row.addEventListener('pointerleave', () => resume(600));
+  row.addEventListener('touchstart', pause, { passive: true });
+  row.addEventListener('touchend', () => resume(2500), { passive: true });
+  row.addEventListener('focusin', pause);
+  row.addEventListener('focusout', () => resume(600));
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => { inView = entries[0].isIntersecting; }).observe(row);
+  } else {
+    inView = true;
+  }
+
+  const gapPx = () => parseFloat(getComputedStyle(row).columnGap) || 0;
+
+  const step = (t) => {
+    if (lastTime === null) lastTime = t;
+    const dt = Math.min((t - lastTime) / 1000, 0.1);
+    lastTime = t;
+    const active = inView && !paused && !reduce.matches && !row.querySelector('iframe');
+    if (active) {
+      /* Manuelle Verschiebung (Wheel, Swipe) übernehmen statt überschreiben */
+      if (Math.abs(row.scrollLeft - pos) > 1.5) pos = row.scrollLeft;
+      pos += SPEED * dt;
+      /* Beide Sätze sind identisch: nach einer Satzbreite nahtlos zurückspringen */
+      const period = (row.scrollWidth + gapPx()) / 2;
+      if (pos >= period) pos -= period;
+      row.scrollLeft = pos;
+    } else {
+      pos = row.scrollLeft;
+    }
+    requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* --------------------------------------------------------------------------
    Init
    -------------------------------------------------------------------------- */
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -183,3 +253,4 @@ initReveal();
 initHeader();
 initScrollerKeyboard(document.getElementById('shortsRow'));
 initScrollerKeyboard(document.getElementById('filmstrip'));
+initShortsAutoLoop(document.getElementById('shortsRow'));

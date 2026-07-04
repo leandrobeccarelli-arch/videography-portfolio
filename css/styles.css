@@ -617,7 +617,6 @@ a {
   display: flex;
   gap: 1.6rem;
   overflow-x: auto;
-  scroll-snap-type: x proximity;
   padding-block: 0.5rem 2rem;
   scrollbar-width: none;
 }
