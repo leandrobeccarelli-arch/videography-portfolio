@@ -175,42 +175,6 @@ function initScrollerKeyboard(row) {
 }
 
 /* --------------------------------------------------------------------------
-   Laufender Timecode im Hero (24 fps), reagiert auf prefers-reduced-motion
-   -------------------------------------------------------------------------- */
-function initTimecode() {
-  const el = document.getElementById('timecode');
-  if (!el) return;
-
-  const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const start = performance.now();
-  const pad = n => String(n).padStart(2, '0');
-  let timer = null;
-
-  const tick = () => {
-    const elapsed = (performance.now() - start) / 1000;
-    const h = Math.floor(elapsed / 3600);
-    const m = Math.floor((elapsed % 3600) / 60);
-    const s = Math.floor(elapsed % 60);
-    const f = Math.floor((elapsed % 1) * 24);
-    el.textContent = 'TC ' + pad(h) + ':' + pad(m) + ':' + pad(s) + ':' + pad(f);
-  };
-
-  const update = () => {
-    if (media.matches) {
-      clearInterval(timer);
-      timer = null;
-    } else if (!timer) {
-      timer = setInterval(tick, 42);
-    }
-  };
-
-  if (typeof media.addEventListener === 'function') {
-    media.addEventListener('change', update);
-  }
-  update();
-}
-
-/* --------------------------------------------------------------------------
    Init
    -------------------------------------------------------------------------- */
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -219,4 +183,3 @@ initReveal();
 initHeader();
 initScrollerKeyboard(document.getElementById('shortsRow'));
 initScrollerKeyboard(document.getElementById('filmstrip'));
-initTimecode();
