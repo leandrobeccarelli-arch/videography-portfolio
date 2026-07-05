@@ -64,13 +64,7 @@ function createVideoCard(video, { vertical = false } = {}) {
   thumb.append(img, badge);
   thumb.addEventListener('click', () => playVideo(thumb, video), { once: true });
 
-  const meta = document.createElement('div');
-  meta.className = 'video-meta';
-  meta.innerHTML = '<h3></h3><span></span>';
-  meta.querySelector('h3').textContent = video.title;
-  meta.querySelector('span').textContent = video.tag;
-
-  card.append(thumb, meta);
+  card.append(thumb);
   return card;
 }
 

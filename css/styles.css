@@ -181,14 +181,11 @@ a {
 }
 
 .wordmark {
-  font-size: 1.5rem;
-  font-weight: 900;
-  letter-spacing: -0.04em;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
   line-height: 1;
-}
-
-.wordmark-dot {
-  color: var(--accent);
 }
 
 .nav-links {
@@ -481,14 +478,6 @@ a {
   font-size: 1rem;
 }
 
-.section-compact .video-meta h3 {
-  font-size: 0.95rem;
-}
-
-.section-compact .video-meta span {
-  font-size: 0.68rem;
-}
-
 .section-compact .play-badge {
   width: 58px;
   height: 58px;
@@ -580,31 +569,6 @@ a {
   fill: var(--ink-dark);
 }
 
-.video-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.2rem 1rem;
-  padding: 1.1rem 0.4rem 0;
-}
-
-.video-meta h3 {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  font-size: 1.08rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.video-meta span {
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  white-space: nowrap;
-}
 
 /* ==========================================================================
    Shorts 9:16
@@ -740,19 +704,22 @@ a {
 }
 
 /* ==========================================================================
-   Expertise Cards (single column, Icon links + Text rechts)
+   Vorteile (3 Spalten, Icon oben zentriert)
    ========================================================================== */
-.cards {
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
+.section-head-center {
+  margin-inline: auto;
+  text-align: center;
 }
 
-.card {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-  padding: 1.9rem 2rem;
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
+}
+
+.benefit {
+  text-align: center;
+  padding: 2.6rem 2rem;
   border-radius: var(--radius);
   background: var(--glass);
   -webkit-backdrop-filter: blur(14px);
@@ -761,38 +728,164 @@ a {
   transition: transform 0.45s var(--ease-out), box-shadow 0.45s ease;
 }
 
-.card:hover {
+.benefit:hover {
   transform: translateY(-4px);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15), var(--shadow-blue);
 }
 
-.card-icon {
-  flex: 0 0 auto;
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+.benefit-icon {
+  width: 64px;
+  height: 64px;
+  margin-inline: auto;
+  margin-bottom: 1.3rem;
   display: grid;
   place-items: center;
-  background: var(--accent-soft);
   color: var(--accent);
-  box-shadow: 0 14px 30px -14px rgba(210, 162, 108, 0.45);
+  filter: drop-shadow(0 0 16px rgba(210, 162, 108, 0.55));
 }
 
-.card-icon svg {
+.benefit-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.benefit h3 {
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.7rem;
+}
+
+.benefit p {
+  color: var(--ink-soft);
+  font-size: 0.97rem;
+}
+
+/* ==========================================================================
+   Resultate: Video-Mockups, Verbindung, Chips + Copy
+   ========================================================================== */
+.results {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: center;
+  margin-top: clamp(4.5rem, 9vh, 7rem);
+}
+
+.results-phones {
+  display: flex;
+  gap: 1.1rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.phone {
+  flex: 0 0 auto;
+  width: clamp(105px, 11vw, 140px);
+  aspect-ratio: 9 / 16;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  background: #1a1410;
+  box-shadow: var(--shadow-card);
+}
+
+.phone:nth-child(2) {
+  margin-top: 2.4rem;
+}
+
+.phone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mini-play {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
   width: 26px;
   height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--ink-dark);
 }
 
-.card-body h3 {
-  font-size: 1.15rem;
+.mini-play svg {
+  width: 12px;
+  height: 12px;
+  margin-left: 1px;
+}
+
+.results-connector {
+  width: 1px;
+  height: 46px;
+  margin: 0.9rem auto;
+  background: linear-gradient(to bottom, var(--hairline), var(--accent));
+}
+
+.results-chips {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 1rem 1.3rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(210, 162, 108, 0.18) 0%, rgba(255, 255, 255, 0.04) 70%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), var(--shadow-soft);
+}
+
+.chip:nth-child(2) {
+  margin-top: 1.6rem;
+}
+
+.chip-num {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.chip-label {
+  font-weight: 700;
+  font-size: 0.94rem;
+}
+
+.results-copy h3 {
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
   font-weight: 700;
   letter-spacing: -0.015em;
-  margin-bottom: 0.45rem;
+  line-height: 1.3;
+  margin-bottom: 1.3rem;
 }
 
-.card-body p {
+.results-copy p {
   color: var(--ink-soft);
-  font-size: 0.99rem;
+  margin-bottom: 1.1rem;
+}
+
+.results-copy strong {
+  color: var(--ink);
+}
+
+.results-copy .btn {
+  margin-top: 0.8rem;
 }
 
 /* ==========================================================================
@@ -886,6 +979,14 @@ a {
   .video-grid.cols-3 {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
+
+  .benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .results {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -897,15 +998,12 @@ a {
     padding-block: 5.5rem 1.6rem;
   }
 
-  .card {
-    padding: 1.5rem 1.4rem;
-    gap: 1.1rem;
+  .wordmark {
+    font-size: 1.15rem;
   }
 
-  .card-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
+  .chip {
+    padding: 0.8rem 1rem;
   }
 
   .filmstrip figure {
