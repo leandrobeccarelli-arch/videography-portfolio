@@ -704,6 +704,190 @@ a {
 }
 
 /* ==========================================================================
+   Herausforderungen (2 Karten mit X-Listen)
+   ========================================================================== */
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.6rem;
+}
+
+.pain-card {
+  padding: 2.3rem 2.2rem;
+  border-radius: var(--radius-large);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), var(--shadow-soft);
+}
+
+.pain-card h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 1.5rem;
+}
+
+.pain-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.pain-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.pain-icon {
+  flex: 0 0 auto;
+  width: 25px;
+  height: 25px;
+  color: var(--ink-faint);
+}
+
+.pain-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.pain-list p {
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+}
+
+.pain-list strong {
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Vergleich (Ich vs. 0815)
+   ========================================================================== */
+.compare {
+  border-radius: var(--radius-large);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), var(--shadow-soft);
+  overflow: hidden;
+}
+
+.compare-head,
+.compare-row {
+  display: grid;
+  grid-template-columns: 1fr 84px 84px;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.15rem 1.7rem;
+}
+
+.compare-head {
+  background: linear-gradient(135deg, rgba(210, 162, 108, 0.2) 0%, rgba(255, 255, 255, 0.03) 70%);
+  padding-block: 0.95rem;
+}
+
+.compare-col-label {
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+.compare-col-label.me {
+  color: var(--accent);
+}
+
+.compare-row {
+  border-top: 1px solid var(--hairline);
+}
+
+.compare-row p {
+  color: var(--ink-soft);
+  font-size: 0.97rem;
+}
+
+.compare-row strong {
+  color: var(--ink);
+}
+
+.mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin-inline: auto;
+}
+
+.mark.yes {
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: 0 0 18px rgba(210, 162, 108, 0.3);
+}
+
+.mark.no {
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  color: var(--ink-faint);
+}
+
+.mark svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ==========================================================================
+   Ablauf (5 Schritte mit Verbindungslinien)
+   ========================================================================== */
+.process {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
+}
+
+.step {
+  position: relative;
+}
+
+.step-num {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #1a1410;
+  box-shadow: inset 0 0 0 1px var(--hairline), var(--shadow-soft);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 23px;
+  left: 60px;
+  right: -1.4rem;
+  height: 1px;
+  background: linear-gradient(to right, var(--hairline), transparent);
+}
+
+.step h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+}
+
+.step p {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+/* ==========================================================================
    Vorteile (3 Spalten, Icon oben zentriert)
    ========================================================================== */
 .section-head-center {
@@ -987,6 +1171,18 @@ a {
   .results {
     grid-template-columns: 1fr;
   }
+
+  .pain-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .process {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .step::before {
+    display: none;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1004,6 +1200,51 @@ a {
 
   .chip {
     padding: 0.8rem 1rem;
+  }
+
+  .process {
+    grid-template-columns: 1fr;
+  }
+
+  /* Vergleich mobil: Text oben, beschriftete Pills darunter */
+  .compare-head {
+    display: none;
+  }
+
+  .compare-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    padding: 1.2rem 1.3rem;
+  }
+
+  .compare-row p {
+    flex: 1 1 100%;
+  }
+
+  .mark {
+    width: auto;
+    height: auto;
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-inline: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .mark.yes::after {
+    content: 'Mit mir';
+  }
+
+  .mark.no::after {
+    content: '0815';
+  }
+
+  .pain-card {
+    padding: 1.8rem 1.5rem;
   }
 
   .filmstrip figure {
