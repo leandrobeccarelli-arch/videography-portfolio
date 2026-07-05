@@ -282,6 +282,39 @@ function initShortsAutoLoop(row) {
 }
 
 /* --------------------------------------------------------------------------
+   Hero-Parallax: Bild und Text folgen der Maus gegenläufig (nur Desktop)
+   -------------------------------------------------------------------------- */
+function initHeroParallax() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  const bg = hero.querySelector('.hero-bg');
+  const content = hero.querySelector('.hero-content');
+  if (!bg) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  let tx = 0, ty = 0, cx = 0, cy = 0;
+
+  hero.addEventListener('pointermove', (e) => {
+    const r = hero.getBoundingClientRect();
+    tx = (e.clientX - r.left) / r.width - 0.5;
+    ty = (e.clientY - r.top) / r.height - 0.5;
+  });
+  hero.addEventListener('pointerleave', () => { tx = 0; ty = 0; });
+
+  const tick = () => {
+    cx += (tx - cx) * 0.06;
+    cy += (ty - cy) * 0.06;
+    bg.style.transform = 'translate3d(' + (cx * -20) + 'px, ' + (cy * -14) + 'px, 0)';
+    if (content) {
+      content.style.transform = 'translate3d(' + (cx * 12) + 'px, ' + (cy * 8) + 'px, 0)';
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+/* --------------------------------------------------------------------------
    Init
    -------------------------------------------------------------------------- */
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -291,3 +324,4 @@ initHeader();
 initScrollerKeyboard(document.getElementById('shortsRow'));
 initScrollerKeyboard(document.getElementById('filmstrip'));
 initShortsAutoLoop(document.getElementById('shortsRow'));
+initHeroParallax();
