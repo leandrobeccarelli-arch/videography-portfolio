@@ -21,6 +21,7 @@ const SHORT_VIDEOS = [
   { id: 'cku4G-28oPI', title: 'IT-Onboarding und Offboarding', tag: 'HEAD IT' },
   { id: '8N5gKsFf3GI', title: 'IT-Security Mythen', tag: 'HEAD IT' },
   { id: 'DE7z6y0i1Tq', type: 'instagram', title: 'Posing Coaching', tag: 'Instagram' },
+  { id: 'C8E5nelNEVl', type: 'instagram', title: 'Gym Reel', tag: 'Instagram' },
 ];
 
 /* --------------------------------------------------------------------------
