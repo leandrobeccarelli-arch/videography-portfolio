@@ -27,7 +27,6 @@ const SHORT_VIDEOS = [
    Video-Karten rendern (Thumbnail zuerst, Iframe erst bei Klick)
    -------------------------------------------------------------------------- */
 const PLAY_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>';
-const INSTA_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>';
 
 function createVideoCard(video, { vertical = false } = {}) {
   const card = document.createElement('article');
@@ -39,15 +38,22 @@ function createVideoCard(video, { vertical = false } = {}) {
   thumb.setAttribute('aria-label', 'Video abspielen: ' + video.title);
 
   if (video.type === 'instagram') {
-    /* Instagram liefert anonym kein Thumbnail, darum eine gebrandete Kachel */
+    /* Nicht-interaktive Embed-Vorschau zeigt das echte Reel-Standbild,
+       der Klick auf die Karte aktiviert dann das bedienbare Embed */
     thumb.classList.add('insta-thumb');
-    const glyph = document.createElement('span');
-    glyph.className = 'insta-glyph';
-    glyph.innerHTML = INSTA_ICON;
-    const label = document.createElement('span');
-    label.className = 'insta-label';
-    label.textContent = 'Reel ansehen';
-    thumb.append(glyph, label);
+    const preview = document.createElement('iframe');
+    preview.className = 'insta-preview';
+    preview.src = 'https://www.instagram.com/p/' + video.id + '/embed/';
+    preview.loading = 'lazy';
+    preview.title = video.title + ' (Vorschau)';
+    preview.setAttribute('aria-hidden', 'true');
+    preview.tabIndex = -1;
+
+    const badge = document.createElement('span');
+    badge.className = 'play-badge';
+    badge.innerHTML = PLAY_ICON;
+
+    thumb.append(preview, badge);
   } else {
     const img = document.createElement('img');
     img.alt = '';
@@ -93,7 +99,18 @@ function playVideo(thumb, video) {
   iframe.allowFullscreen = true;
   thumb.replaceChildren(iframe);
   thumb.classList.remove('insta-thumb');
+  thumb.classList.add('is-playing');
   thumb.style.cursor = 'default';
+}
+
+/* Fisher-Yates: Shorts bei jedem Besuch in neuer Reihenfolge */
+function shuffle(list) {
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 function renderVideos() {
@@ -106,9 +123,10 @@ function renderVideos() {
     if (regular >= 3 && regular % 3 === 0) grid.classList.add('cols-3');
   }
   if (row) {
-    SHORT_VIDEOS.forEach(v => row.appendChild(createVideoCard(v, { vertical: true })));
-    /* Zweiter, identischer Satz für die nahtlose Endlos-Rotation */
-    SHORT_VIDEOS.forEach(v => {
+    const shorts = shuffle(SHORT_VIDEOS);
+    shorts.forEach(v => row.appendChild(createVideoCard(v, { vertical: true })));
+    /* Zweiter, identischer Satz (gleiche Reihenfolge!) für die nahtlose Endlos-Rotation */
+    shorts.forEach(v => {
       const clone = createVideoCard(v, { vertical: true });
       clone.classList.remove('reveal');
       clone.setAttribute('aria-hidden', 'true');
@@ -227,7 +245,7 @@ function initShortsAutoLoop(row) {
     if (lastTime === null) lastTime = t;
     const dt = Math.min((t - lastTime) / 1000, 0.1);
     lastTime = t;
-    const active = inView && !paused && !reduce.matches && !row.querySelector('iframe');
+    const active = inView && !paused && !reduce.matches && !row.querySelector('.is-playing');
     if (active) {
       /* Manuelle Verschiebung (Wheel, Swipe) übernehmen statt überschreiben */
       if (Math.abs(row.scrollLeft - pos) > 1.5) pos = row.scrollLeft;
