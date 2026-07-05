@@ -20,8 +20,8 @@ const SHORT_VIDEOS = [
   { id: 'K7HIbj06O-k', title: 'Microsoft Defender', tag: 'HEAD IT' },
   { id: 'cku4G-28oPI', title: 'IT-Onboarding und Offboarding', tag: 'HEAD IT' },
   { id: '8N5gKsFf3GI', title: 'IT-Security Mythen', tag: 'HEAD IT' },
-  { id: 'DE7z6y0i1Tq', type: 'instagram', title: 'Posing Coaching', tag: 'Instagram' },
-  { id: 'C8E5nelNEVl', type: 'instagram', title: 'Gym Reel', tag: 'Instagram' },
+  { id: 'DE7z6y0i1Tq', type: 'instagram', title: 'Posing Coaching', tag: 'Instagram', thumb: 'assets/insta-DE7z6y0i1Tq.jpg' },
+  { id: 'C8E5nelNEVl', type: 'instagram', title: 'Gym Reel', tag: 'Instagram', thumb: 'assets/insta-C8E5nelNEVl.jpg' },
 ];
 
 /* --------------------------------------------------------------------------
@@ -38,29 +38,15 @@ function createVideoCard(video, { vertical = false } = {}) {
   thumb.className = 'video-thumb';
   thumb.setAttribute('aria-label', 'Video abspielen: ' + video.title);
 
-  if (video.type === 'instagram') {
-    /* Nicht-interaktive Embed-Vorschau zeigt das echte Reel-Standbild,
-       der Klick auf die Karte aktiviert dann das bedienbare Embed */
-    thumb.classList.add('insta-thumb');
-    const preview = document.createElement('iframe');
-    preview.className = 'insta-preview';
-    preview.src = 'https://www.instagram.com/p/' + video.id + '/embed/';
-    preview.loading = 'lazy';
-    preview.title = video.title + ' (Vorschau)';
-    preview.setAttribute('aria-hidden', 'true');
-    preview.tabIndex = -1;
-
-    const badge = document.createElement('span');
-    badge.className = 'play-badge';
-    badge.innerHTML = PLAY_ICON;
-
-    thumb.append(preview, badge);
-  } else {
-    const img = document.createElement('img');
-    img.alt = '';
-    img.loading = 'lazy';
-    /* Shorts haben ein vertikales Thumbnail (oardefault), 16:9 das grosse maxresdefault */
-    img.src = 'https://i.ytimg.com/vi/' + video.id + (vertical ? '/oardefault.jpg' : '/maxresdefault.jpg');
+  const img = document.createElement('img');
+  img.alt = '';
+  img.loading = 'lazy';
+  /* Instagram-Reels nutzen lokal extrahierte Thumbnails, YouTube die ytimg-CDN
+     (Shorts vertikal via oardefault, 16:9 via maxresdefault) */
+  img.src = video.thumb
+    ? video.thumb
+    : 'https://i.ytimg.com/vi/' + video.id + (vertical ? '/oardefault.jpg' : '/maxresdefault.jpg');
+  if (!video.thumb) {
     img.addEventListener('error', () => {
       if (!img.dataset.fallback) {
         img.dataset.fallback = '1';
@@ -69,14 +55,13 @@ function createVideoCard(video, { vertical = false } = {}) {
         img.remove();
       }
     });
-
-    const badge = document.createElement('span');
-    badge.className = 'play-badge';
-    badge.innerHTML = PLAY_ICON;
-
-    thumb.append(img, badge);
   }
 
+  const badge = document.createElement('span');
+  badge.className = 'play-badge';
+  badge.innerHTML = PLAY_ICON;
+
+  thumb.append(img, badge);
   thumb.addEventListener('click', () => playVideo(thumb, video), { once: true });
 
   const meta = document.createElement('div');
@@ -99,7 +84,6 @@ function playVideo(thumb, video) {
   iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
   iframe.allowFullscreen = true;
   thumb.replaceChildren(iframe);
-  thumb.classList.remove('insta-thumb');
   thumb.classList.add('is-playing');
   thumb.style.cursor = 'default';
 }
@@ -241,18 +225,42 @@ function initShortsAutoLoop(row) {
   }
 
   const gapPx = () => parseFloat(getComputedStyle(row).columnGap) || 0;
+  let target = null;
 
   const step = (t) => {
     if (lastTime === null) lastTime = t;
     const dt = Math.min((t - lastTime) / 1000, 0.1);
     lastTime = t;
-    const active = inView && !paused && !reduce.matches && !row.querySelector('.is-playing');
-    if (active) {
+    const playing = !!row.querySelector('.is-playing');
+    const period = (row.scrollWidth + gapPx()) / 2;
+
+    if (target !== null) {
+      /* Pfeil-Navigation: sanft zum Ziel gleiten */
+      if (reduce.matches) {
+        pos = target;
+      } else {
+        pos += (target - pos) * Math.min(1, dt * 6);
+      }
+      if (Math.abs(target - pos) < 0.8) {
+        pos = target;
+        target = null;
+      }
+      if (playing) {
+        /* Während ein Video läuft nicht wrappen, sonst würde das laufende
+           Embed beim Satz-Sprung optisch verschwinden */
+        const max = row.scrollWidth - row.clientWidth;
+        pos = Math.min(Math.max(pos, 0), max);
+        if (target !== null) target = Math.min(Math.max(target, 0), max);
+      } else {
+        if (pos >= period) { pos -= period; if (target !== null) target -= period; }
+        if (pos < 0) { pos += period; if (target !== null) target += period; }
+      }
+      row.scrollLeft = pos;
+    } else if (inView && !paused && !reduce.matches && !playing) {
       /* Manuelle Verschiebung (Wheel, Swipe) übernehmen statt überschreiben */
       if (Math.abs(row.scrollLeft - pos) > 1.5) pos = row.scrollLeft;
       pos += SPEED * dt;
       /* Beide Sätze sind identisch: nach einer Satzbreite nahtlos zurückspringen */
-      const period = (row.scrollWidth + gapPx()) / 2;
       if (pos >= period) pos -= period;
       row.scrollLeft = pos;
     } else {
@@ -261,6 +269,22 @@ function initShortsAutoLoop(row) {
     requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
+
+  /* Pfeile: eine Kartenbreite vor oder zurück, Loop inklusive */
+  const stepWidth = () => {
+    const first = row.children[0];
+    return first ? first.offsetWidth + gapPx() : 320;
+  };
+  const nudge = (dir) => {
+    pause();
+    resume(4000);
+    if (target === null) target = pos;
+    target += dir * stepWidth();
+  };
+  const prev = document.getElementById('shortsPrev');
+  const next = document.getElementById('shortsNext');
+  if (prev) prev.addEventListener('click', () => nudge(-1));
+  if (next) next.addEventListener('click', () => nudge(1));
 }
 
 /* --------------------------------------------------------------------------
