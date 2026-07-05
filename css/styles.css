@@ -186,6 +186,7 @@ a {
   font-weight: 400;
   letter-spacing: 0.06em;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .nav-links {
@@ -210,6 +211,7 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  white-space: nowrap;
   padding: 0.9rem 1.8rem;
   border-radius: 999px;
   font-size: 0.98rem;
@@ -334,6 +336,12 @@ a {
 
 .hero-sub {
   color: rgba(255, 255, 255, 0.92);
+}
+
+.hero-note {
+  margin-top: 1.2rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .hero-foot {
@@ -928,6 +936,17 @@ a {
   font-size: 0.92rem;
 }
 
+.process-cta {
+  text-align: center;
+  margin-top: clamp(2.8rem, 6vh, 4rem);
+}
+
+.cta-note {
+  margin-top: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}
+
 /* ==========================================================================
    Vorteile (3 Spalten, Icon oben zentriert)
    ========================================================================== */
@@ -1145,11 +1164,51 @@ a {
   margin-bottom: 2.4rem;
 }
 
+.assurance {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem 1.8rem;
+  margin-bottom: 2.3rem;
+}
+
+.assurance li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.assurance svg {
+  width: 15px;
+  height: 15px;
+  color: var(--accent);
+}
+
 .contact-actions {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.6rem;
+}
+
+.contact-mail {
+  font-size: 0.88rem;
+  color: var(--ink-faint);
+}
+
+.contact-mail a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.25s ease;
+}
+
+.contact-mail a:hover {
+  color: var(--accent);
 }
 
 .socials {
