@@ -182,14 +182,14 @@ function initScrollerKeyboard(row) {
 }
 
 /* --------------------------------------------------------------------------
-   Endlos-Rotation der Shorts.
+   Endlos-Rotation eines horizontalen Scrollers.
    Pausiert bei Hover, Touch, Tastaturfokus, ausserhalb des Viewports,
    bei prefers-reduced-motion und sobald ein Video abspielt.
    -------------------------------------------------------------------------- */
-function initShortsAutoLoop(row) {
+function initAutoLoop(row, { speed = 35, prev = null, next = null } = {}) {
   if (!row) return;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const SPEED = 35; /* Pixel pro Sekunde */
+  const SPEED = speed; /* Pixel pro Sekunde */
   let paused = false;
   let inView = false;
   let resumeTimer = null;
@@ -275,10 +275,19 @@ function initShortsAutoLoop(row) {
     if (target === null) target = pos;
     target += dir * stepWidth();
   };
-  const prev = document.getElementById('shortsPrev');
-  const next = document.getElementById('shortsNext');
   if (prev) prev.addEventListener('click', () => nudge(-1));
   if (next) next.addEventListener('click', () => nudge(1));
+}
+
+/* Statische Kinder eines Scrollers für den nahtlosen Loop duplizieren */
+function duplicateForLoop(row) {
+  if (!row) return;
+  Array.from(row.children).forEach(el => {
+    const clone = el.cloneNode(true);
+    clone.classList.remove('reveal');
+    clone.setAttribute('aria-hidden', 'true');
+    row.appendChild(clone);
+  });
 }
 
 /* --------------------------------------------------------------------------
@@ -323,5 +332,11 @@ initReveal();
 initHeader();
 initScrollerKeyboard(document.getElementById('shortsRow'));
 initScrollerKeyboard(document.getElementById('filmstrip'));
-initShortsAutoLoop(document.getElementById('shortsRow'));
+initAutoLoop(document.getElementById('shortsRow'), {
+  speed: 35,
+  prev: document.getElementById('shortsPrev'),
+  next: document.getElementById('shortsNext'),
+});
+duplicateForLoop(document.getElementById('filmstrip'));
+initAutoLoop(document.getElementById('filmstrip'), { speed: 55 });
 initHeroParallax();
